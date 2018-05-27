@@ -1,3 +1,7 @@
+* {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -26,6 +30,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #fafafa;
 }
 
 @keyframes App-logo-spin {

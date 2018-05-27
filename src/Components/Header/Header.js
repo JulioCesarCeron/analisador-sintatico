@@ -57,7 +57,8 @@ class Header extends React.Component {
 									color="inherit"
 								>
 									<Avatar
-										alt="Adelle Charles"
+                                        alt="Julio Cesar Ceron"
+                                        title="Github"
 										src="https://avatars3.githubusercontent.com/u/7506632?s=40&v=4"
 										className={classes.avatar}
 									/>
