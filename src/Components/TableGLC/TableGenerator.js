@@ -3,10 +3,6 @@ import {
 	ExpansionPanel,
 	ExpansionPanelDetails,
 	ExpansionPanelSummary,
-	ExpansionPanelActions,
-	Chip,
-	Button,
-	Divider,
 	withStyles,
 	Typography,
 	Grid

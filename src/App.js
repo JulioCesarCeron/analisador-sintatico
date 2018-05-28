@@ -15,7 +15,7 @@ import TableGenerator from './Components/TableGLC/TableGenerator';
 
 class App extends Component {
 	state = {
-		value: 0
+		value: 1
 	};
 
 	handleChange = (event, value) => {
@@ -86,7 +86,7 @@ class App extends Component {
 				<AppBar position="static">
 					<Header />
 					<Tabs value={value} centered onChange={this.handleChange}>
-						<Tab label="Produção" />
+						<Tab label="Produção"  />
 						<Tab label="Gerador" />
 					</Tabs>
 				</AppBar>
@@ -98,8 +98,8 @@ class App extends Component {
 							<InfoProduction title="First" sm={2} data={first} />
 							<InfoProduction title="Follow" sm={2} data={follow} />
 						</Grid>
-						<Grid container className={classes.root} justify="center" spacing={16}>
-							<TableProduction data={tabela_analise} title="Tabela de Análise" />
+						<Grid container className={classes.root} justify="center" spacing={16} wrap="wrap">
+                            <TableProduction data={tabela_analise} title="Tabela de Análise" />
 						</Grid>
 					</TabContainer>
 				)}
@@ -108,7 +108,7 @@ class App extends Component {
 						<Grid container className={classes.root} justify="center" spacing={16}>
 							<Generator data={tabela_analise} />
 						</Grid>
-						<Grid container className={classes.root} justify="center" spacing={6}>
+						<Grid container className={classes.root} justify="center" spacing={16}>
 							<TableGenerator data={tabela_analise} title="Tabela de Análise" />
 						</Grid>
 					</TabContainer>
@@ -128,10 +128,6 @@ const styles = (theme) => ({
 		paddingTop: 0,
 		padding: 20
 	},
-	body: {},
-	gridContent: {
-		display: 'flex'
-	}
 });
 
 function TabContainer(props) {
