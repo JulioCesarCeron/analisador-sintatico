@@ -14,7 +14,7 @@ import TableContent from '../TableGLC/TableContent';
 const TableGenerator = (props) => {
 	const { classes } = props;
 	return (
-		<Grid item xs={12} sm={6}>
+		<Grid item xs={12} sm={8}>
 			<div className={classes.root}>
 				<ExpansionPanel>
 					<ExpansionPanelSummary

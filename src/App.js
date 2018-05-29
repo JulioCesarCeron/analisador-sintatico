@@ -20,7 +20,11 @@ class App extends Component {
 
 	handleChange = (event, value) => {
 		this.setState({ value });
-	};
+    };
+    
+    handleToken = (e) => {
+        console.log('token', e)
+    }
 
 	render() {
 		TabContainer.propTypes = {
@@ -106,7 +110,7 @@ class App extends Component {
 				{value === 1 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<Generator data={tabela_analise} />
+							<Generator onHandleToken={this.handleToken} data={tabela_analise} />
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
 							<TableGenerator data={tabela_analise} title="Tabela de Análise" />
