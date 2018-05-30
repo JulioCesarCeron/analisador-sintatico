@@ -15,45 +15,8 @@ import TableGenerator from './Components/TableGLC/TableGenerator';
 
 class App extends Component {
 	state = {
-		value: 1
-	};
-
-	handleChange = (event, value) => {
-		this.setState({ value });
-    };
-    
-    handleToken = (e) => {
-        console.log('token', e)
-    }
-
-	render() {
-		TabContainer.propTypes = {
-			children: PropTypes.node.isRequired
-		};
-
-		const { classes } = this.props;
-		const data = {
-			S: [ '→', 'bBa', '|', 'cC', '', '' ],
-			A: [ '→', 'cCa', '|', 'bS', '|', 'ε' ],
-			B: [ '→', 'cCA', '|', 'b', '', '' ],
-			C: [ '→', 'Bd', '|', 'a', '', '' ]
-		};
-
-		const first = {
-			S: [ '=', '{b, c}' ],
-			A: [ '=', '{c, b}' ],
-			B: [ '=', '{c, b}' ],
-			C: [ '=', '{c, b, a}' ]
-		};
-
-		const follow = {
-			S: [ '=', '{$, a, d}' ],
-			A: [ '=', '{a, d}' ],
-			B: [ '=', '{a, d}' ],
-			C: [ '=', '{a, c, b, d, $}' ]
-		};
-
-		const tabela_analise = {
+		value: 1,
+		tabela_analise: {
 			S: {
 				a: '',
 				b: 'S → bBa',
@@ -82,6 +45,90 @@ class App extends Component {
 				d: '',
 				sf: ''
 			}
+		},
+		history: []
+	};
+
+	handleChange = (event, value) => {
+		this.setState({ value });
+	};
+
+	reverse = (str) => {
+		return str.split('').reverse().join('');
+	};
+
+	handleToken = (token) => {
+		console.log('token primeiro', token[0]);
+		console.log('token', token);
+
+		let input = token;
+		let action = '';
+		let queue = 'S';
+		let next = true;
+
+		let counter = 0;
+
+		while (counter < 2) {
+			let history = this.state.history;
+			let lastQueue = queue[queue.length - 1];
+			console.log('lastQueue', lastQueue);
+
+			if (lastQueue === lastQueue.toUpperCase()) {
+                console.log('input', input);
+				//consulta tabela
+				action = this.state.tabela_analise[lastQueue][input[0]];
+				console.log('action IF', action);
+				this.setState({
+					history: history.concat([
+						{
+							queue: queue,
+							input: input,
+							action: action
+						}
+					])
+				});
+
+				console.log('queue IF ANTES', lastQueue);
+
+				let pos = queue.lastIndexOf(lastQueue);
+				queue = this.reverse(queue.substring(0, pos) + action.slice(action.indexOf('→ ') + 2));
+				console.log('queue IF DEPOIS', queue);
+				let value = queue.replace(lastQueue);
+				console.log('value', value);
+			} else {
+                input = input.replace(lastQueue, "");
+                console.log('input', input);
+            }
+
+			counter++;
+		}
+	};
+
+	render() {
+		TabContainer.propTypes = {
+			children: PropTypes.node.isRequired
+		};
+
+		const { classes } = this.props;
+		const data = {
+			S: [ '→', 'bBa', '|', 'cC', '', '' ],
+			A: [ '→', 'cCa', '|', 'bS', '|', 'ε' ],
+			B: [ '→', 'cCA', '|', 'b', '', '' ],
+			C: [ '→', 'Bd', '|', 'a', '', '' ]
+		};
+
+		const first = {
+			S: [ '=', '{b, c}' ],
+			A: [ '=', '{c, b}' ],
+			B: [ '=', '{c, b}' ],
+			C: [ '=', '{c, b, a}' ]
+		};
+
+		const follow = {
+			S: [ '=', '{$, a, d}' ],
+			A: [ '=', '{a, d}' ],
+			B: [ '=', '{a, d}' ],
+			C: [ '=', '{a, c, b, d, $}' ]
 		};
 
 		const { value } = this.state;
@@ -90,7 +137,7 @@ class App extends Component {
 				<AppBar position="static">
 					<Header />
 					<Tabs value={value} centered onChange={this.handleChange}>
-						<Tab label="Produção"  />
+						<Tab label="Produção" />
 						<Tab label="Gerador" />
 					</Tabs>
 				</AppBar>
@@ -103,17 +150,17 @@ class App extends Component {
 							<InfoProduction title="Follow" sm={2} data={follow} />
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16} wrap="wrap">
-                            <TableProduction data={tabela_analise} title="Tabela de Análise" />
+							<TableProduction data={this.state.tabela_analise} title="Tabela de Análise" />
 						</Grid>
 					</TabContainer>
 				)}
 				{value === 1 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<Generator onHandleToken={this.handleToken} data={tabela_analise} />
+							<Generator onHandleToken={this.handleToken} data={this.state.tabela_analise} />
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<TableGenerator data={tabela_analise} title="Tabela de Análise" />
+							<TableGenerator data={this.state.tabela_analise} title="Tabela de Análise" />
 						</Grid>
 					</TabContainer>
 				)}
@@ -131,7 +178,7 @@ const styles = (theme) => ({
 	root: {
 		paddingTop: 0,
 		padding: 20
-	},
+	}
 });
 
 function TabContainer(props) {

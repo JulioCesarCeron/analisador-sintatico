@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { withStyles, Grid, Paper, TextField, Typography, Button } from '@material-ui/core';
 
 class Generator extends Component {
-    state = {
-        inputValue: ''
-    }
-    
+	state = {
+		inputValue: 'bcacaaa'
+	};
 
 	render() {
 		const { classes } = this.props;
@@ -20,18 +19,23 @@ class Generator extends Component {
 								label="TOKEN"
 								type="search"
 								//className={classes.textField}
-                                margin="dense"
-                                onChange={(event) => this.setState({inputValue: event.target.value})}
+								margin="dense"
+								onChange={(event) => this.setState({ inputValue: event.target.value })}
 							/>
 						</Grid>
 						<Grid item xs sm={2} className={classes.contentButton}>
-							<Button variant="raised" color="primary" className={classes.button} onClick={() => this.props.onHandleToken(this.state.inputValue)}>
+							<Button
+								variant="raised"
+								color="primary"
+								className={classes.button}
+								onClick={() => this.props.onHandleToken(this.state.inputValue)}
+							>
 								Primary
 							</Button>
 						</Grid>
 					</Grid>
 
-					<Grid container wrap="nowrap" spacing={16} > 
+					<Grid container wrap="nowrap" spacing={16}>
 						<Grid item xs zeroMinWidth>
 							<Typography noWrap>Entrada</Typography>
 						</Grid>
@@ -43,9 +47,9 @@ class Generator extends Component {
 						<Grid item xs zeroMinWidth className={classes.action}>
 							<Typography noWrap>Ação</Typography>
 						</Grid>
-                    </Grid>
+					</Grid>
 
-                    <Grid container wrap="nowrap" spacing={16}>
+					<Grid container wrap="nowrap" spacing={16}>
 						<Grid item xs zeroMinWidth>
 							<Typography noWrap>Entrada</Typography>
 						</Grid>
@@ -96,8 +100,8 @@ const styles = (theme) => ({
 		borderLeft: '1px solid #959595'
 	},
 	action: {
-        borderLeft: '1px solid #959595'
-    }
+		borderLeft: '1px solid #959595'
+	}
 });
 
 export default withStyles(styles)(Generator);
