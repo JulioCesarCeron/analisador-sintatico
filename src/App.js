@@ -72,7 +72,38 @@ class App extends Component {
 
 		let stateQueue = [];
 
-		while (counter < 11) {
+		while (next) {
+			if (input.length === 0 && queue.length === 0) {
+                let lengthIteration = stateQueue.length + 1
+                stateQueue.push({
+					queue: '',
+					input: '',
+					action: 'aceito em ' + lengthIteration + ' iterações'
+				});
+				break;
+            }
+            
+            if (input.length === 0 && queue.length > 0) {
+                let lengthIteration = stateQueue.length + 1
+                stateQueue.push({
+					queue: '',
+					input: '',
+					action: 'erro em ' + lengthIteration + ' iterações'
+				});
+				break;
+            }
+            
+            if (input.length > 0 && queue.length === 0) {
+                let lengthIteration = stateQueue.length + 1
+                stateQueue.push({
+					queue: '',
+					input: '',
+					action: 'erro em ' + lengthIteration + ' iterações'
+				});
+				break;
+			}
+
+
 			let lastQueue = queue[queue.length - 1];
 
 			if (lastQueue === lastQueue.toUpperCase()) {
@@ -87,27 +118,25 @@ class App extends Component {
 
 				let pos = queue.lastIndexOf(lastQueue);
 				queue = queue.substring(0, pos) + this.reverse(action.slice(action.indexOf('→ ') + 2));
-				let value = queue.replace(lastQueue);
+				//let value = queue.replace(lastQueue);
 			} else {
-				
 				stateQueue.push({
-                    queue: queue,
+					queue: queue,
 					input: input,
 					action: 'ler ' + lastQueue
-                });
+				});
 
-
-                input = input.replace(lastQueue, '');
-                let indexPos = queue.lastIndexOf(lastQueue);
-                queue = queue.substr(0, indexPos);
+				input = input.replace(lastQueue, '');
+				let indexPos = queue.lastIndexOf(lastQueue);
+				queue = queue.substr(0, indexPos);
 			}
-            
+
 			counter++;
-            
+
 			console.log('---------------------------------------');
 		}
-        
-        console.log('FINAL stateQueue', stateQueue);
+
+		console.log('FINAL stateQueue', stateQueue);
 	};
 
 	render() {

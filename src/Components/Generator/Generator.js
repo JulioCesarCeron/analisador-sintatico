@@ -3,7 +3,7 @@ import { withStyles, Grid, Paper, TextField, Typography, Button } from '@materia
 
 class Generator extends Component {
 	state = {
-		inputValue: 'bcacaaa'
+		inputValue: 'bcacaca'
 	};
 
 	render() {
