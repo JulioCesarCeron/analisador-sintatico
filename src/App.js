@@ -68,40 +68,46 @@ class App extends Component {
 
 		let counter = 0;
 
-		while (counter < 2) {
-			let history = this.state.history;
+		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
+
+		let stateQueue = [];
+
+		while (counter < 11) {
 			let lastQueue = queue[queue.length - 1];
-			console.log('lastQueue', lastQueue);
 
 			if (lastQueue === lastQueue.toUpperCase()) {
-                console.log('input', input);
 				//consulta tabela
 				action = this.state.tabela_analise[lastQueue][input[0]];
-				console.log('action IF', action);
-				this.setState({
-					history: history.concat([
-						{
-							queue: queue,
-							input: input,
-							action: action
-						}
-					])
+
+				stateQueue.push({
+					queue: queue,
+					input: input,
+					action: action
 				});
 
-				console.log('queue IF ANTES', lastQueue);
-
 				let pos = queue.lastIndexOf(lastQueue);
-				queue = this.reverse(queue.substring(0, pos) + action.slice(action.indexOf('→ ') + 2));
-				console.log('queue IF DEPOIS', queue);
+				queue = queue.substring(0, pos) + this.reverse(action.slice(action.indexOf('→ ') + 2));
 				let value = queue.replace(lastQueue);
-				console.log('value', value);
 			} else {
-                input = input.replace(lastQueue, "");
-                console.log('input', input);
-            }
+				
+				stateQueue.push({
+                    queue: queue,
+					input: input,
+					action: 'ler ' + lastQueue
+                });
 
+
+                input = input.replace(lastQueue, '');
+                let indexPos = queue.lastIndexOf(lastQueue);
+                queue = queue.substr(0, indexPos);
+			}
+            
 			counter++;
+            
+			console.log('---------------------------------------');
 		}
+        
+        console.log('FINAL stateQueue', stateQueue);
 	};
 
 	render() {
