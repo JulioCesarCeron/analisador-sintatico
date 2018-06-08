@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
-import { withStyles, Grid, Paper, TextField, Typography, Button } from '@material-ui/core';
+import {
+	withStyles,
+	Grid,
+	Paper,
+	TextField,
+	Typography,
+	Button,
+	Chip,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableRow
+} from '@material-ui/core';
+import { Done, Eject, Close } from '@material-ui/icons';
 
 class Generator extends Component {
 	state = {
-		inputValue: 'bcacaca'
+		inputValue: 'bcacaaa'
 	};
 
 	render() {
 		const { classes } = this.props;
 		return (
-			<Grid item xs={12} sm={8}>
+			<Grid item xs={12} sm={9}>
 				<Paper className={classes.paper}>
 					<Grid container wrap="nowrap" spacing={16} className={classes.contentTextField}>
 						<Grid item xs zeroMinWidth>
@@ -24,44 +38,94 @@ class Generator extends Component {
 							/>
 						</Grid>
 						<Grid item xs sm={2} className={classes.contentButton}>
-							<Button
-								variant="raised"
-								color="primary"
-								className={classes.button}
-								onClick={() => this.props.onHandleToken(this.state.inputValue)}
-							>
-								Primary
-							</Button>
+							<Grid container wrap="nowrap" spacing={8}>
+								<Grid item>
+									<Button
+										size="small"
+										variant="raised"
+										color="primary"
+										className={classes.button}
+										onClick={() => this.props.onHandleToken(this.state.inputValue)}
+									>
+										Verificar
+									</Button>
+								</Grid>
+								<Grid item>
+									<Button
+										size="small"
+										variant="raised"
+										color="primary"
+										className={classes.button}
+										onClick={() => this.props.onHandleToken(this.state.inputValue)}
+									>
+										Tabela
+									</Button>
+								</Grid>
+							</Grid>
 						</Grid>
 					</Grid>
-
-					<Grid container wrap="nowrap" spacing={16}>
+					<Grid container wrap="nowrap" spacing={8}>
 						<Grid item xs zeroMinWidth>
-							<Typography noWrap>Entrada</Typography>
-						</Grid>
-
-						<Grid item xs className={classes.queue}>
-							<Typography noWrap>Pilha</Typography>
-						</Grid>
-
-						<Grid item xs zeroMinWidth className={classes.action}>
-							<Typography noWrap>Ação</Typography>
-						</Grid>
-					</Grid>
-
-					<Grid container wrap="nowrap" spacing={16}>
-						<Grid item xs zeroMinWidth>
-							<Typography noWrap>Entrada</Typography>
-						</Grid>
-
-						<Grid item xs className={classes.queue}>
-							<Typography noWrap>Pilha</Typography>
-						</Grid>
-
-						<Grid item xs zeroMinWidth className={classes.action}>
-							<Typography noWrap>Ação</Typography>
+							<Chip
+								label="bcacaaa"
+								onClick={() => 1}
+								onDelete={() => 1}
+								className={classes.chip}
+								deleteIcon={<Done style={{ color: 'green' }} />}
+							/>
+							<Chip
+								label="bcacaaa"
+								onClick={() => 1}
+								onDelete={() => 1}
+								style={{ marginLeft: 10 }}
+								className={classes.chip}
+								deleteIcon={<Close style={{ color: 'red' }} />}
+							/>
 						</Grid>
 					</Grid>
+					{this.props.tableData && (
+						<Table className={classes.table}>
+							<TableHead>
+								<TableRow>
+									<TableCell>a</TableCell>
+									<TableCell>b</TableCell>
+									<TableCell>c</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{this.props.tableData.map((data, i) => (
+									<TableRow key={i}>
+										<TableCell className={classes.cell}>
+											<Typography>queue</Typography>
+										</TableCell>
+										<TableCell className={classes.cell}>
+											<Typography>input</Typography>
+										</TableCell>
+										<TableCell className={classes.cell}>
+											<Typography>Ação</Typography>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					)}
+
+					{/*this.props.tableData &&
+					 	this.props.tableData.map((data) => (
+					 		<Grid container wrap="nowrap" spacing={16} className={classes.contentTable}>
+					 			<Grid item xs zeroMinWidth>
+					 				<Typography noWrap>Entrada</Typography>
+					 			</Grid>
+
+					 			<Grid item xs className={classes.queue}>
+					 				<Typography noWrap>Pilha</Typography>
+					 			</Grid>
+
+					 			<Grid item xs zeroMinWidth className={classes.action}>
+					 				<Typography noWrap>Ação</Typography>
+					 			</Grid>
+					 		</Grid>
+                      	))*/}
 				</Paper>
 			</Grid>
 		);
@@ -92,8 +156,10 @@ const styles = (theme) => ({
 	},
 	contentTextField: {
 		display: 'flex',
-		justifyContent: 'center',
-		marginBottom: 40
+		justifyContent: 'center'
+	},
+	contentTable: {
+		paddingTop: 40
 	},
 	input: {},
 	queue: {
@@ -101,6 +167,9 @@ const styles = (theme) => ({
 	},
 	action: {
 		borderLeft: '1px solid #959595'
+	},
+	chip: {
+		marginLeft: 10
 	}
 });
 

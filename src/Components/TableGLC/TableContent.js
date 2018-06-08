@@ -1,13 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core/';
 
 const TableContent = (props) => {
-    const { classes } = props;
+	const { classes } = props;
 	return (
 		<div className={classes.tableContent}>
 			<Table className={classes.table}>
@@ -45,7 +41,7 @@ const TableContent = (props) => {
 const styles = (theme) => ({
 	tableContent: {
 		paddingLeft: 10,
-        paddingRight: 10,
+		paddingRight: 10
 	},
 	cell: {
 		width: 20,

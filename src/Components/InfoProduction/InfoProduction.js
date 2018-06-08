@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {Table, TableBody, TableCell, TableRow, Paper, Grid, Typography} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableRow, Paper, Grid, Typography } from '@material-ui/core';
 
 const InfoProduction = (props) => {
 	const { classes } = props;

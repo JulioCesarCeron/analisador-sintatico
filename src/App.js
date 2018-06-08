@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import { withStyles, Grid, Tabs, Tab, Typography, AppBar } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
 
 import Header from './Components/Header/Header';
 import InfoProduction from './Components/InfoProduction/InfoProduction';
@@ -40,8 +35,8 @@ class App extends Component {
 			},
 			C: {
 				a: 'C → a',
-				b: 'C → Bd ',
-				c: 'C → Bd ',
+				b: 'C → Bd',
+				c: 'C → Bd',
 				d: '',
 				sf: ''
 			}
@@ -57,10 +52,13 @@ class App extends Component {
 		return str.split('').reverse().join('');
 	};
 
-	handleToken = (token) => {
-		console.log('token primeiro', token[0]);
-		console.log('token', token);
+	saveQueue = (queue) => {
+		this.setState((prevState) => ({
+			history: [ ...prevState.history, queue ]
+		}));
+	};
 
+	handleToken = (token) => {
 		let input = token;
 		let action = '';
 		let queue = 'S';
@@ -68,44 +66,43 @@ class App extends Component {
 
 		let counter = 0;
 
-		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
-
 		let stateQueue = [];
 
 		while (next) {
+			let lengthIteration = stateQueue.length + 1;
 			if (input.length === 0 && queue.length === 0) {
-                let lengthIteration = stateQueue.length + 1
-                stateQueue.push({
+				stateQueue.push({
 					queue: '',
 					input: '',
 					action: 'aceito em ' + lengthIteration + ' iterações'
 				});
-				break;
-            }
-            
-            if (input.length === 0 && queue.length > 0) {
-                let lengthIteration = stateQueue.length + 1
-                stateQueue.push({
-					queue: '',
-					input: '',
-					action: 'erro em ' + lengthIteration + ' iterações'
-				});
-				break;
-            }
-            
-            if (input.length > 0 && queue.length === 0) {
-                let lengthIteration = stateQueue.length + 1
-                stateQueue.push({
-					queue: '',
-					input: '',
-					action: 'erro em ' + lengthIteration + ' iterações'
-				});
+				this.saveQueue(stateQueue);
 				break;
 			}
 
+			if (input.length === 0 && queue.length > 0) {
+				stateQueue.push({
+					queue: queue,
+					input: '',
+					action: 'erro em ' + lengthIteration + ' iterações'
+				});
+				this.saveQueue(stateQueue);
+				break;
+			}
+
+			if (input.length > 0 && queue.length === 0) {
+				stateQueue.push({
+					queue: '',
+					input: input,
+					action: 'erro em ' + lengthIteration + ' iterações'
+				});
+				this.saveQueue(stateQueue);
+				break;
+			}
 
 			let lastQueue = queue[queue.length - 1];
 
+			//verifica se o ultimo valor da pilha é um não terminal ou um terminal
 			if (lastQueue === lastQueue.toUpperCase()) {
 				//consulta tabela
 				action = this.state.tabela_analise[lastQueue][input[0]];
@@ -118,7 +115,6 @@ class App extends Component {
 
 				let pos = queue.lastIndexOf(lastQueue);
 				queue = queue.substring(0, pos) + this.reverse(action.slice(action.indexOf('→ ') + 2));
-				//let value = queue.replace(lastQueue);
 			} else {
 				stateQueue.push({
 					queue: queue,
@@ -126,17 +122,22 @@ class App extends Component {
 					action: 'ler ' + lastQueue
 				});
 
+				if (lastQueue !== input[0]) {
+					stateQueue.push({
+						queue: '',
+						input: '',
+						action: 'erro em ' + (lengthIteration + 1) + ' iterações'
+					});
+					this.saveQueue(stateQueue);
+					break;
+				}
+
 				input = input.replace(lastQueue, '');
 				let indexPos = queue.lastIndexOf(lastQueue);
 				queue = queue.substr(0, indexPos);
 			}
-
 			counter++;
-
-			console.log('---------------------------------------');
 		}
-
-		console.log('FINAL stateQueue', stateQueue);
 	};
 
 	render() {
@@ -192,7 +193,7 @@ class App extends Component {
 				{value === 1 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<Generator onHandleToken={this.handleToken} data={this.state.tabela_analise} />
+							<Generator tableData={this.state.history[0]} onHandleToken={this.handleToken} data={this.state.tabela_analise} />
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
 							<TableGenerator data={this.state.tabela_analise} title="Tabela de Análise" />
