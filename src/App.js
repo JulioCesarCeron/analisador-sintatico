@@ -11,6 +11,7 @@ import TableGenerator from './Components/TableGLC/TableGenerator';
 class App extends Component {
 	state = {
 		value: 1,
+		inputValue: '',
 		tabela_analise: {
 			S: {
 				a: '',
@@ -41,7 +42,9 @@ class App extends Component {
 				sf: ''
 			}
 		},
-		history: []
+		history: [],
+		showTable: false,
+		tokens: ''
 	};
 
 	handleChange = (event, value) => {
@@ -52,91 +55,109 @@ class App extends Component {
 		return str.split('').reverse().join('');
 	};
 
-	saveQueue = (queue) => {
+	saveQueue = (queue, valid) => {
 		this.setState((prevState) => ({
-			history: [ ...prevState.history, queue ]
+			history: [
+				...prevState.history,
+				{
+					queue: queue,
+					valid: valid
+				}
+			]
 		}));
 	};
 
-	handleToken = (token) => {
-		let input = token;
-		let action = '';
-		let queue = 'S';
-		let next = true;
+	onShowTable = () => {
+		this.setState((prevState) => {
+			return { showTable: !prevState.showTable };
+		});
+	};
 
-		let counter = 0;
+	handleToken = () => {
+		console.log('this.state', this.state);
+		if (this.state.tokens.indexOf(this.state.inputValue) !== -1) {
+			alert('Token já foi inserido');
+		} else {
+			let input = this.state.inputValue;
+			this.setState((prevState) => {
+				return { tokens: [ ...prevState.tokens, this.state.inputValue ] };
+			});
 
-		let stateQueue = [];
+			let action = '';
+			let queue = 'S';
+			let next = true;
 
-		while (next) {
-			let lengthIteration = stateQueue.length + 1;
-			if (input.length === 0 && queue.length === 0) {
-				stateQueue.push({
-					queue: '',
-					input: '',
-					action: 'aceito em ' + lengthIteration + ' iterações'
-				});
-				this.saveQueue(stateQueue);
-				break;
-			}
+			let stateQueue = [];
 
-			if (input.length === 0 && queue.length > 0) {
-				stateQueue.push({
-					queue: queue,
-					input: '',
-					action: 'erro em ' + lengthIteration + ' iterações'
-				});
-				this.saveQueue(stateQueue);
-				break;
-			}
-
-			if (input.length > 0 && queue.length === 0) {
-				stateQueue.push({
-					queue: '',
-					input: input,
-					action: 'erro em ' + lengthIteration + ' iterações'
-				});
-				this.saveQueue(stateQueue);
-				break;
-			}
-
-			let lastQueue = queue[queue.length - 1];
-
-			//verifica se o ultimo valor da pilha é um não terminal ou um terminal
-			if (lastQueue === lastQueue.toUpperCase()) {
-				//consulta tabela
-				action = this.state.tabela_analise[lastQueue][input[0]];
-
-				stateQueue.push({
-					queue: queue,
-					input: input,
-					action: action
-				});
-
-				let pos = queue.lastIndexOf(lastQueue);
-				queue = queue.substring(0, pos) + this.reverse(action.slice(action.indexOf('→ ') + 2));
-			} else {
-				stateQueue.push({
-					queue: queue,
-					input: input,
-					action: 'ler ' + lastQueue
-				});
-
-				if (lastQueue !== input[0]) {
+			while (next) {
+				let lengthIteration = stateQueue.length + 1;
+				if (input.length === 0 && queue.length === 0) {
 					stateQueue.push({
 						queue: '',
 						input: '',
-						action: 'erro em ' + (lengthIteration + 1) + ' iterações'
+						action: 'aceito em ' + lengthIteration + ' iterações'
 					});
-					this.saveQueue(stateQueue);
+					this.saveQueue(stateQueue, true);
 					break;
 				}
 
-				input = input.replace(lastQueue, '');
-				let indexPos = queue.lastIndexOf(lastQueue);
-				queue = queue.substr(0, indexPos);
+				if (input.length === 0 && queue.length > 0) {
+					stateQueue.push({
+						queue: queue,
+						input: '',
+						action: 'erro em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, false);
+					break;
+				}
+
+				if (input.length > 0 && queue.length === 0) {
+					stateQueue.push({
+						queue: '',
+						input: input,
+						action: 'erro em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, false);
+					break;
+				}
+
+				let lastQueue = queue[queue.length - 1];
+
+				//verifica se o ultimo valor da pilha é um não terminal ou um terminal
+				if (lastQueue === lastQueue.toUpperCase()) {
+					//consulta tabela
+					action = this.state.tabela_analise[lastQueue][input[0]];
+
+					stateQueue.push({
+						queue: queue,
+						input: input,
+						action: action
+					});
+
+					let pos = queue.lastIndexOf(lastQueue);
+					queue = queue.substring(0, pos) + this.reverse(action.slice(action.indexOf('→ ') + 2));
+				} else {
+					stateQueue.push({
+						queue: queue,
+						input: input,
+						action: 'ler ' + lastQueue
+					});
+
+					if (lastQueue !== input[0]) {
+						stateQueue.push({
+							queue: '',
+							input: '',
+							action: 'erro em ' + (lengthIteration + 1) + ' iterações'
+						});
+						this.saveQueue(stateQueue, false);
+						break;
+					}
+
+					input = input.replace(lastQueue, '');
+					let indexPos = queue.lastIndexOf(lastQueue);
+					queue = queue.substr(0, indexPos);
+				}
 			}
-			counter++;
 		}
 	};
 
@@ -193,7 +214,14 @@ class App extends Component {
 				{value === 1 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<Generator tableData={this.state.history[0]} onHandleToken={this.handleToken} data={this.state.tabela_analise} />
+							<Generator
+								tableData={this.state.history}
+								onHandleToken={this.handleToken}
+								onInputToken={(event) => this.setState({ inputValue: event.target.value })}
+								data={this.state.tabela_analise}
+								showTable={this.state.showTable}
+								onShowTable={this.onShowTable}
+							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
 							<TableGenerator data={this.state.tabela_analise} title="Tabela de Análise" />

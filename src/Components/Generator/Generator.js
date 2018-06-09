@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
 	withStyles,
 	Grid,
@@ -13,136 +13,140 @@ import {
 	TableHead,
 	TableRow
 } from '@material-ui/core';
-import { Done, Eject, Close } from '@material-ui/icons';
+import { Done, Close } from '@material-ui/icons';
 
-class Generator extends Component {
-	state = {
-		inputValue: 'bcacaaa'
-	};
+const Generator = (props) => {
+	const lastToken = props.tableData.length === 0 ? 0 : props.tableData.length - 1;
 
-	render() {
-		const { classes } = this.props;
-		return (
-			<Grid item xs={12} sm={9}>
-				<Paper className={classes.paper}>
-					<Grid container wrap="nowrap" spacing={16} className={classes.contentTextField}>
-						<Grid item xs zeroMinWidth>
-							<TextField
-								fullWidth
-								id="token"
-								label="TOKEN"
-								type="search"
-								//className={classes.textField}
-								margin="dense"
-								onChange={(event) => this.setState({ inputValue: event.target.value })}
-							/>
-						</Grid>
-						<Grid item xs sm={2} className={classes.contentButton}>
-							<Grid container wrap="nowrap" spacing={8}>
-								<Grid item>
-									<Button
-										size="small"
-										variant="raised"
-										color="primary"
-										className={classes.button}
-										onClick={() => this.props.onHandleToken(this.state.inputValue)}
-									>
-										Verificar
-									</Button>
-								</Grid>
-								<Grid item>
-									<Button
-										size="small"
-										variant="raised"
-										color="primary"
-										className={classes.button}
-										onClick={() => this.props.onHandleToken(this.state.inputValue)}
-									>
-										Tabela
-									</Button>
-								</Grid>
+	const { classes } = props;
+	const padStart =
+		props.tableData[[ lastToken ]] !== undefined ? props.tableData[[ lastToken ]].queue[0].input.length : 0;
+
+	return (
+		<Grid item xs={12} sm={9}>
+			<Paper className={classes.paper}>
+				<Grid container wrap="nowrap" spacing={16} className={classes.contentTextField}>
+					<Grid item xs zeroMinWidth>
+						<TextField
+							fullWidth
+							id="token"
+							label="TOKEN"
+							type="search"
+							//className={classes.textField}
+							onChange={props.onInputToken}
+							margin="dense"
+						/>
+					</Grid>
+					<Grid item xs sm={2} className={classes.contentButton}>
+						<Grid container wrap="nowrap" spacing={8}>
+							<Grid item>
+								<Button
+									size="small"
+									variant="raised"
+									color="primary"
+									className={classes.button}
+									onClick={props.onHandleToken}
+								>
+									Verificar
+								</Button>
+							</Grid>
+							<Grid item>
+								<Button
+									size="small"
+									variant="raised"
+									color="primary"
+									className={classes.button}
+									onClick={props.onShowTable}
+									disabled={padStart > 0 ? false : true}
+								>
+									Tabela
+								</Button>
 							</Grid>
 						</Grid>
 					</Grid>
-					<Grid container wrap="nowrap" spacing={8}>
-						<Grid item xs zeroMinWidth>
-							<Chip
-								label="bcacaaa"
-								onClick={() => 1}
-								onDelete={() => 1}
-								className={classes.chip}
-								deleteIcon={<Done style={{ color: 'green' }} />}
-							/>
-							<Chip
-								label="bcacaaa"
-								onClick={() => 1}
-								onDelete={() => 1}
-								style={{ marginLeft: 10 }}
-								className={classes.chip}
-								deleteIcon={<Close style={{ color: 'red' }} />}
-							/>
+				</Grid>
+				<Grid container wrap="nowrap" spacing={8}>
+					<Grid item xs zeroMinWidth>
+						{props.tableData
+							.slice(0)
+							.reverse()
+							.map((token, i) => (
+								<Chip
+									key={i}
+									label={token.queue[0].input}
+									onClick={() => 1}
+									onDelete={() => 1}
+									className={classes.chip}
+									deleteIcon={
+										token.valid ? (
+											<Done style={{ color: 'green' }} />
+										) : (
+											<Close style={{ color: 'red' }} />
+										)
+									}
+								/>
+							))}
+					</Grid>
+				</Grid>
+				{props.showTable && (
+					<Grid container wrap="nowrap" spacing={8} justify="center">
+						<Grid item xs={12} sm={10}>
+							{props.tableData[[ lastToken ]] !== undefined && (
+								<Table className={classes.table}>
+									<TableHead>
+										<TableRow>
+											<TableCell>PILHA</TableCell>
+											<TableCell style={{ textAlign: 'center' }}>ENTRADA</TableCell>
+											<TableCell>AÇÃO</TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{props.tableData[[ lastToken ]].queue.map((data, i) => {
+											return (
+												<TableRow key={i}>
+													<TableCell className={classes.cell}>
+														<Typography>
+															<strong>$</strong>
+															{data.queue}
+														</Typography>
+													</TableCell>
+													<TableCell style={{ paddingLeft: 0 }} className={classes.cell}>
+														<Typography
+															style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}
+														>
+															{data.input.padStart(padStart)} <strong>$</strong>
+														</Typography>
+													</TableCell>
+													<TableCell className={classes.cell}>
+														<Typography>{data.action}</Typography>
+													</TableCell>
+												</TableRow>
+											);
+										})}
+									</TableBody>
+								</Table>
+							)}
 						</Grid>
 					</Grid>
-					{this.props.tableData && (
-						<Table className={classes.table}>
-							<TableHead>
-								<TableRow>
-									<TableCell>a</TableCell>
-									<TableCell>b</TableCell>
-									<TableCell>c</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{this.props.tableData.map((data, i) => (
-									<TableRow key={i}>
-										<TableCell className={classes.cell}>
-											<Typography>queue</Typography>
-										</TableCell>
-										<TableCell className={classes.cell}>
-											<Typography>input</Typography>
-										</TableCell>
-										<TableCell className={classes.cell}>
-											<Typography>Ação</Typography>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					)}
-
-					{/*this.props.tableData &&
-					 	this.props.tableData.map((data) => (
-					 		<Grid container wrap="nowrap" spacing={16} className={classes.contentTable}>
-					 			<Grid item xs zeroMinWidth>
-					 				<Typography noWrap>Entrada</Typography>
-					 			</Grid>
-
-					 			<Grid item xs className={classes.queue}>
-					 				<Typography noWrap>Pilha</Typography>
-					 			</Grid>
-
-					 			<Grid item xs zeroMinWidth className={classes.action}>
-					 				<Typography noWrap>Ação</Typography>
-					 			</Grid>
-					 		</Grid>
-                      	))*/}
-				</Paper>
-			</Grid>
-		);
-	}
-}
+				)}
+			</Paper>
+		</Grid>
+	);
+};
 
 const styles = (theme) => ({
 	root: {
 		overflow: 'hidden'
 		//padding: `0 ${theme.spacing.unit * 3}px`
 	},
+	paper: {
+		width: '100%',
+		marginTop: theme.spacing.unit * 3,
+		overflowX: 'auto',
+		padding: 20
+	},
 	wrapper: {
 		//maxWidth: 400
-	},
-	paper: {
-		//margin: theme.spacing.unit,
-		padding: 20
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
@@ -169,7 +173,8 @@ const styles = (theme) => ({
 		borderLeft: '1px solid #959595'
 	},
 	chip: {
-		marginLeft: 10
+        marginLeft: 10,
+        marginBottom: 10,
 	}
 });
 
