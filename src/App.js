@@ -57,6 +57,15 @@ class App extends Component {
         return str.split('').reverse().join('');
     };
 
+    handleNextStep = () => {
+        console.log("next step", this.state)
+        this.setState(prevState => {
+            return (
+                { step: prevState.step + 1 }
+            )
+        })
+    }
+
     handleStepByStep = () => {
         this.setState(prevState => {
             return (
@@ -240,8 +249,10 @@ class App extends Component {
                                 data={this.state.tabela_analise}
                                 showTable={this.state.showTable}
                                 onShowTable={this.onShowTable}
+                                step={this.state.step}
                                 stepByStep={this.state.stepByStep}
                                 onHandleStepByStep={this.handleStepByStep}
+                                onNextStep={this.handleNextStep}
                             />
                         </Grid>
                         <Grid container className={classes.root} justify="center" spacing={16}>
