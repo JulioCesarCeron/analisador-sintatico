@@ -18,47 +18,21 @@ import {
 	Divider,
 	Zoom
 } from '@material-ui/core';
-import { Done, Close, SkipPrevious, PlayArrow, SkipNext } from '@material-ui/icons';
+import { Done, Close, SkipPrevious, PlayArrow, SkipNext, Replay } from '@material-ui/icons';
 
 const Generator = (props) => {
-	const lastToken = props.tableData.length === 0 ? 0 : props.tableData.length - 1;
+    let replay
+	const tableDataLength = props.tableData.length;
 
 	const { classes } = props;
 	const padStart =
-		props.tableData[[ lastToken ]] !== undefined ? props.tableData[[ lastToken ]].queue[0].input.length : 0;
+		props.tableData[props.currentToken] !== undefined
+			? props.tableData[props.currentToken].queue[0].input.length
+			: 0;
 
-	// if (props.tableData[lastToken] !== undefined) {
-	//     props.tableData[lastToken].queue[0].map(item => {console.log('item', item)})
-
-	// }
-
-	// let stepByStepContent
-
-	// if (props.showTable && props.stepByStep) {
-	//     for (let index = 0; index < 2; index++) {
-	//         console.log(props.tableData[lastToken].queue[index])
-	//         stepByStepContent = (
-	//             <TableRow key={index}>
-	//                 <TableCell className={classes.cell}>
-	//                     <Typography>
-	//                         <strong>$</strong>
-	//                         {props.tableData[lastToken].queue[index].queue}
-	//                     </Typography>
-	//                 </TableCell>
-	//                 <TableCell style={{ paddingLeft: 0 }} className={classes.cell}>
-	//                     <Typography
-	//                         style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}
-	//                     >
-	//                         {props.tableData[lastToken].queue[index].input.padStart(padStart)} <strong>$</strong>
-	//                     </Typography>
-	//                 </TableCell>
-	//                 <TableCell className={classes.cell}>
-	//                     <Typography>{props.tableData[lastToken].queue[index].action}</Typography>
-	//                 </TableCell>
-	//             </TableRow>
-	//         )
-	//     }
-	// }
+	if (props.tableData[props.currentToken] !== undefined) {
+		replay = props.tableData[props.currentToken].queue.length - 1 === props.step;
+	}
 
 	return (
 		<Grid item xs={12} sm={9}>
@@ -114,7 +88,7 @@ const Generator = (props) => {
 					}
 					label="Step by Step"
 				/>
-				{props.tableData.length !== 0 && <Divider />}
+				{tableDataLength !== 0 && <Divider />}
 				<Grid container wrap="nowrap" className={classes.contentChip} spacing={8}>
 					<Grid item xs zeroMinWidth>
 						{props.tableData
@@ -138,12 +112,12 @@ const Generator = (props) => {
 							))}
 					</Grid>
 				</Grid>
-				{props.tableData.length !== 0 && <Divider />}
+				{tableDataLength !== 0 && <Divider />}
 				{props.showTable &&
 				!props.stepByStep && (
 					<Grid container wrap="nowrap" spacing={8} justify="center">
 						<Grid item xs={12} sm={10}>
-							{props.tableData[[ lastToken ]] !== undefined && (
+							{props.tableData[props.currentToken] !== undefined && (
 								<Table className={classes.table}>
 									<TableHead>
 										<TableRow>
@@ -153,7 +127,7 @@ const Generator = (props) => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{props.tableData[[ lastToken ]].queue.map((data, i) => {
+										{props.tableData[props.currentToken].queue.map((data, i) => {
 											return (
 												<TableRow key={i}>
 													<TableCell className={classes.cell}>
@@ -187,7 +161,7 @@ const Generator = (props) => {
 				props.stepByStep && (
 					<Grid container wrap="nowrap" spacing={8} justify="center">
 						<Grid item xs={12} sm={10}>
-							{props.tableData[[ lastToken ]] !== undefined && (
+							{props.tableData[props.currentToken] !== undefined && (
 								<Table className={classes.table}>
 									<TableHead>
 										<TableRow>
@@ -197,7 +171,7 @@ const Generator = (props) => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{props.tableData[[ lastToken ]].queue.map((data, i) => {
+										{props.tableData[props.currentToken].queue.map((data, i) => {
 											if (i <= props.step) {
 												return (
 													<TableRow key={i}>
@@ -220,8 +194,8 @@ const Generator = (props) => {
 													</TableRow>
 												);
 											} else {
-                                                return null;
-                                            }
+												return null;
+											}
 										})}
 									</TableBody>
 								</Table>
@@ -237,7 +211,7 @@ const Generator = (props) => {
 					<Zoom in={props.stepByStep} className={classes.zoomContent}>
 						<div className={classes.details}>
 							<div className={classes.controls}>
-								<IconButton aria-label="Previous">
+								<IconButton aria-label="Previous" onClick={props.onPreviousStep}>
 									<SkipPrevious />
 								</IconButton>
 								{/*
@@ -245,12 +219,18 @@ const Generator = (props) => {
                                     <PlayArrow className={classes.playIcon} />
                                 </IconButton>
                             */}
-								<IconButton
-									aria-label="Next"
-									onClick={props.onNextStep}
-								>
-									<SkipNext />
-								</IconButton>
+
+								{!replay && (
+									<IconButton aria-label="Next" onClick={props.onNextStep}>
+										<SkipNext />
+									</IconButton>
+								)}
+
+								{replay && (
+									<IconButton aria-label="Next" onClick={props.onResetStep}>
+										<Replay />
+									</IconButton>
+								)}
 							</div>
 						</div>
 					</Zoom>

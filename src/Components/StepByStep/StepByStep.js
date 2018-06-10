@@ -27,7 +27,6 @@ const StepByStep = (props) => {
 	}
 
     stepByStepContent
-    console.log('stepByStepContent', stepByStepContent);
 	return <TableBody>stepByStepContent</TableBody>;
 };
 

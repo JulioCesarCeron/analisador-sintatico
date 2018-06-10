@@ -9,280 +9,301 @@ import TableProduction from './Components/TableGLC/TableProduction';
 import TableGenerator from './Components/TableGLC/TableGenerator';
 
 class App extends Component {
-    state = {
-        value: 1,
-        inputValue: '',
-        tabela_analise: {
-            S: {
-                a: '',
-                b: 'S → bBa',
-                c: 'S → cC',
-                d: '',
-                sf: ''
-            },
-            A: {
-                a: 'A → ε',
-                b: 'A → bS',
-                c: 'A → cCa',
-                d: 'A → ε',
-                sf: ''
-            },
-            B: {
-                a: '',
-                b: 'B → b',
-                c: 'B → cCA',
-                d: '',
-                sf: ''
-            },
-            C: {
-                a: 'C → a',
-                b: 'C → Bd',
-                c: 'C → Bd',
-                d: '',
-                sf: ''
-            }
-        },
-        history: [],
-        showTable: false,
-        tokens: '',
-        stepByStep: false,
-        step: 0
-    };
+	state = {
+		value: 1,
+		inputValue: '',
+		tabela_analise: {
+			S: {
+				a: '',
+				b: 'S → bBa',
+				c: 'S → cC',
+				d: '',
+				sf: ''
+			},
+			A: {
+				a: 'A → ε',
+				b: 'A → bS',
+				c: 'A → cCa',
+				d: 'A → ε',
+				sf: ''
+			},
+			B: {
+				a: '',
+				b: 'B → b',
+				c: 'B → cCA',
+				d: '',
+				sf: ''
+			},
+			C: {
+				a: 'C → a',
+				b: 'C → Bd',
+				c: 'C → Bd',
+				d: '',
+				sf: ''
+			}
+		},
+		history: [],
+		showTable: false,
+		tokens: '',
+		stepByStep: false,
+        step: 0,
+        currentToken: 0
+	};
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
+	handleChange = (event, value) => {
+		this.setState({ value });
+	};
 
-    reverse = (str) => {
-        return str.split('').reverse().join('');
+	reverse = (str) => {
+		return str.split('').reverse().join('');
     };
-
-    handleNextStep = () => {
-        console.log("next step", this.state)
-        this.setState(prevState => {
-            return (
-                { step: prevState.step + 1 }
-            )
+    
+    handleResetStep = () => {
+        this.setState({
+            step: 0
         })
     }
 
-    handleStepByStep = () => {
-        this.setState(prevState => {
-            return (
-                { stepByStep: !prevState.stepByStep }
-            )
-        })
-    }
-
-    saveQueue = (queue, valid) => {
-        this.setState((prevState) => ({
-            history: [
-                ...prevState.history,
-                {
-                    queue: queue,
-                    valid: valid
-                }
-            ]
-        }));
-    };
-
-    onShowTable = () => {
-        this.setState((prevState) => {
-            return { showTable: !prevState.showTable };
+	handleNextStep = () => {
+		this.setState((prevState) => {
+			return { step: prevState.step < (this.state.history[this.state.currentToken].queue.length - 1) ? (prevState.step + 1) : prevState.step };
         });
-    };
+	};
 
-    handleToken = () => {
-        if (this.state.tokens.indexOf(this.state.inputValue) !== -1) {
-            alert('Token já foi inserido');
-        } else {
-            let input = this.state.inputValue;
-            this.setState((prevState) => {
-                return { tokens: [...prevState.tokens, this.state.inputValue] };
-            });
+	handlePrevioustStep = () => {
+		this.setState((prevState) => {
+			return { step: prevState.step !== 0 ? prevState.step - 1 : prevState.step };
+		});
+	};
 
-            let action = '';
-            let queue = 'S';
-            let next = true;
+	handleStepByStep = () => {
+		this.setState((prevState) => {
+			return { stepByStep: !prevState.stepByStep };
+		});
+	};
 
-            let stateQueue = [];
+	saveQueue = (queue, valid) => {
+		this.setState((prevState) => ({
+			history: [
+				...prevState.history,
+				{
+					queue: queue,
+					valid: valid
+				}
+			]
+		}));
+	};
 
-            while (next) {
-                let lengthIteration = stateQueue.length + 1;
-                if (input.length === 0 && queue.length === 0) {
-                    stateQueue.push({
-                        queue: '',
-                        input: '',
-                        action: 'aceito em ' + lengthIteration + ' iterações'
-                    });
-                    this.saveQueue(stateQueue, true);
-                    break;
-                }
+	onShowTable = () => {
+		this.setState((prevState) => {
+			return { showTable: !prevState.showTable };
+		});
+	};
 
-                if (input.length === 0 && queue.length > 0) {
-                    stateQueue.push({
-                        queue: queue,
-                        input: '',
-                        action: 'erro em ' + lengthIteration + ' iterações'
-                    });
-                    this.saveQueue(stateQueue, false);
-                    break;
-                }
+	handleToken = () => {
+		if (this.state.tokens.indexOf(this.state.inputValue) !== -1) {
+			alert('Token já foi inserido');
+		} else {
+			let input = this.state.inputValue;
+			this.setState((prevState) => {
+				return { tokens: [ ...prevState.tokens, this.state.inputValue ] };
+			});
 
-                if (input.length > 0 && queue.length === 0) {
-                    stateQueue.push({
-                        queue: '',
-                        input: input,
-                        action: 'erro em ' + lengthIteration + ' iterações'
-                    });
-                    this.saveQueue(stateQueue, false);
-                    break;
-                }
+			let action = '';
+			let queue = 'S';
+			let next = true;
 
-                let lastQueue = queue[queue.length - 1];
+			let stateQueue = [];
 
-                //verifica se o ultimo valor da pilha é um não terminal ou um terminal
-                if (lastQueue === lastQueue.toUpperCase()) {
-                    //consulta tabela
-                    action = this.state.tabela_analise[lastQueue][input[0]];
+			while (next) {
+				let lengthIteration = stateQueue.length + 1;
+				if (input.length === 0 && queue.length === 0) {
+					stateQueue.push({
+						queue: '',
+						input: '',
+						action: 'aceito em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, true);
+					break;
+				}
 
-                    if (action === '') {
-                        stateQueue.push({
-                            queue: queue,
-                            input: input,
-                            action: 'erro em ' + lengthIteration + ' iterações'
-                        });
-                        this.saveQueue(stateQueue, false);
-                        break;
-                    }
+				if (input.length === 0 && queue.length > 0) {
+					stateQueue.push({
+						queue: queue,
+						input: '',
+						action: 'erro em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, false);
+					break;
+				}
 
-                    stateQueue.push({
-                        queue: queue,
-                        input: input,
-                        action: action
-                    });
+				if (input.length > 0 && queue.length === 0) {
+					stateQueue.push({
+						queue: '',
+						input: input,
+						action: 'erro em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, false);
+					break;
+				}
 
-                    let pos = queue.lastIndexOf(lastQueue);
-                    queue = queue.substring(0, pos) + (this.reverse(action.slice(action.indexOf('→ ') + 2)) !== 'ε' ? this.reverse(action.slice(action.indexOf('→ ') + 2)) : '');
-                } else {
-                    stateQueue.push({
-                        queue: queue,
-                        input: input,
-                        action: 'ler ' + lastQueue
-                    });
+				let lastQueue = queue[queue.length - 1];
 
-                    if (lastQueue !== input[0]) {
-                        stateQueue.push({
-                            queue: '',
-                            input: '',
-                            action: 'erro em ' + (lengthIteration + 1) + ' iterações'
-                        });
-                        this.saveQueue(stateQueue, false);
-                        break;
-                    }
+				//verifica se o ultimo valor da pilha é um não terminal ou um terminal
+				if (lastQueue === lastQueue.toUpperCase()) {
+					//consulta tabela
+					action = this.state.tabela_analise[lastQueue][input[0]];
 
-                    input = input.replace(lastQueue, '');
-                    let indexPos = queue.lastIndexOf(lastQueue);
-                    queue = queue.substr(0, indexPos);
-                }
+					if (action === '') {
+						stateQueue.push({
+							queue: queue,
+							input: input,
+							action: 'erro em ' + lengthIteration + ' iterações'
+						});
+						this.saveQueue(stateQueue, false);
+						break;
+					}
+
+					stateQueue.push({
+						queue: queue,
+						input: input,
+						action: action
+					});
+
+					let pos = queue.lastIndexOf(lastQueue);
+					queue =
+						queue.substring(0, pos) +
+						(this.reverse(action.slice(action.indexOf('→ ') + 2)) !== 'ε'
+							? this.reverse(action.slice(action.indexOf('→ ') + 2))
+							: '');
+				} else {
+					stateQueue.push({
+						queue: queue,
+						input: input,
+						action: 'ler ' + lastQueue
+					});
+
+					if (lastQueue !== input[0]) {
+						stateQueue.push({
+							queue: '',
+							input: '',
+							action: 'erro em ' + (lengthIteration + 1) + ' iterações'
+						});
+						this.saveQueue(stateQueue, false);
+						break;
+					}
+
+					input = input.replace(lastQueue, '');
+					let indexPos = queue.lastIndexOf(lastQueue);
+					queue = queue.substr(0, indexPos);
+				}
             }
-        }
-    };
+            
+            this.setState({
+                currentToken: (this.state.history.length),
+                step: 0
+            })
+		}
+	};
 
-    render() {
-        TabContainer.propTypes = {
-            children: PropTypes.node.isRequired
-        };
+	render() {
+		TabContainer.propTypes = {
+			children: PropTypes.node.isRequired
+		};
 
-        const { classes } = this.props;
-        const data = {
-            S: ['→', 'bBa', '|', 'cC', '', ''],
-            A: ['→', 'cCa', '|', 'bS', '|', 'ε'],
-            B: ['→', 'cCA', '|', 'b', '', ''],
-            C: ['→', 'Bd', '|', 'a', '', '']
-        };
+		const { classes } = this.props;
+		const data = {
+			S: [ '→', 'bBa', '|', 'cC', '', '' ],
+			A: [ '→', 'cCa', '|', 'bS', '|', 'ε' ],
+			B: [ '→', 'cCA', '|', 'b', '', '' ],
+			C: [ '→', 'Bd', '|', 'a', '', '' ]
+		};
 
-        const first = {
-            S: ['=', '{b, c}'],
-            A: ['=', '{c, b}'],
-            B: ['=', '{c, b}'],
-            C: ['=', '{c, b, a}']
-        };
+		const first = {
+			S: [ '=', '{b, c}' ],
+			A: [ '=', '{c, b}' ],
+			B: [ '=', '{c, b}' ],
+			C: [ '=', '{c, b, a}' ]
+		};
 
-        const follow = {
-            S: ['=', '{$, a, d}'],
-            A: ['=', '{a, d}'],
-            B: ['=', '{a, d}'],
-            C: ['=', '{a, c, b, d, $}']
-        };
+		const follow = {
+			S: [ '=', '{$, a, d}' ],
+			A: [ '=', '{a, d}' ],
+			B: [ '=', '{a, d}' ],
+			C: [ '=', '{a, c, b, d, $}' ]
+		};
 
         const { value } = this.state;
-        return (
-            <div className={classes.content}>
-                <AppBar position="static">
-                    <Header />
-                    <Tabs value={value} centered onChange={this.handleChange}>
-                        <Tab label="Produção" />
-                        <Tab label="Gerador" />
-                    </Tabs>
-                </AppBar>
 
-                {value === 0 && (
-                    <TabContainer>
-                        <Grid container className={classes.root} justify="center" spacing={16}>
-                            <InfoProduction title="Produção" sm={2} data={data} />
-                            <InfoProduction title="First" sm={2} data={first} />
-                            <InfoProduction title="Follow" sm={2} data={follow} />
-                        </Grid>
-                        <Grid container className={classes.root} justify="center" spacing={16} wrap="wrap">
-                            <TableProduction data={this.state.tabela_analise} title="Tabela de Análise" />
-                        </Grid>
-                    </TabContainer>
-                )}
-                {value === 1 && (
-                    <TabContainer>
-                        <Grid container className={classes.root} justify="center" spacing={16}>
-                            <Generator
-                                tableData={this.state.history}
-                                onHandleToken={this.handleToken}
-                                onInputToken={(event) => this.setState({ inputValue: event.target.value })}
+		return (
+			<div className={classes.content}>
+				<AppBar position="static">
+					<Header />
+					<Tabs value={value} centered onChange={this.handleChange}>
+						<Tab label="Produção" />
+						<Tab label="Gerador" />
+					</Tabs>
+				</AppBar>
+
+				{value === 0 && (
+					<TabContainer>
+						<Grid container className={classes.root} justify="center" spacing={16}>
+							<InfoProduction title="Produção" sm={2} data={data} />
+							<InfoProduction title="First" sm={2} data={first} />
+							<InfoProduction title="Follow" sm={2} data={follow} />
+						</Grid>
+						<Grid container className={classes.root} justify="center" spacing={16} wrap="wrap">
+							<TableProduction data={this.state.tabela_analise} title="Tabela de Análise" />
+						</Grid>
+					</TabContainer>
+				)}
+				{value === 1 && (
+					<TabContainer>
+						<Grid container className={classes.root} justify="center" spacing={16}>
+							<Generator
+								tableData={this.state.history}
+								onHandleToken={this.handleToken}
+								onInputToken={(event) => this.setState({ inputValue: event.target.value })}
                                 data={this.state.tabela_analise}
-                                showTable={this.state.showTable}
-                                onShowTable={this.onShowTable}
-                                step={this.state.step}
-                                stepByStep={this.state.stepByStep}
-                                onHandleStepByStep={this.handleStepByStep}
+                                currentToken={this.state.currentToken}
+								showTable={this.state.showTable}
+								onShowTable={this.onShowTable}
+								step={this.state.step}
+								stepByStep={this.state.stepByStep}
+								onHandleStepByStep={this.handleStepByStep}
                                 onNextStep={this.handleNextStep}
-                            />
-                        </Grid>
-                        <Grid container className={classes.root} justify="center" spacing={16}>
-                            <TableGenerator data={this.state.tabela_analise} title="Tabela de Análise" />
-                        </Grid>
-                    </TabContainer>
-                )}
-            </div>
-        );
-    }
+                                onPreviousStep={this.handlePrevioustStep}
+                                onResetStep={this.handleResetStep}
+							/>
+						</Grid>
+						<Grid container className={classes.root} justify="center" spacing={16}>
+							<TableGenerator data={this.state.tabela_analise} title="Tabela de Análise" />
+						</Grid>
+					</TabContainer>
+				)}
+			</div>
+		);
+	}
 }
 
 const styles = (theme) => ({
-    content: {
-        margin: 0,
-        flexGrow: 1
-        //backgroundColor: theme.palette.background.paper
-    },
-    root: {
-        paddingTop: 0,
-        padding: 20
-    }
+	content: {
+		margin: 0,
+		flexGrow: 1
+		//backgroundColor: theme.palette.background.paper
+	},
+	root: {
+		paddingTop: 0,
+		padding: 20
+	}
 });
 
 function TabContainer(props) {
-    return (
-        <Typography component="div" style={{ padding: 8 * 3 }}>
-            {props.children}
-        </Typography>
-    );
+	return (
+		<Typography component="div" style={{ padding: 8 * 3 }}>
+			{props.children}
+		</Typography>
+	);
 }
 
 export default withStyles(styles)(App);
