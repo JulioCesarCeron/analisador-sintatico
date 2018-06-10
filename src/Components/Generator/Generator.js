@@ -18,10 +18,10 @@ import {
 	Divider,
 	Zoom
 } from '@material-ui/core';
-import { Done, Close, SkipPrevious, PlayArrow, SkipNext, Replay } from '@material-ui/icons';
+import { Done, Close, SkipPrevious, PlayArrow, SkipNext, Replay, Autorenew } from '@material-ui/icons';
 
 const Generator = (props) => {
-    let replay
+	let replay;
 	const tableDataLength = props.tableData.length;
 
 	const { classes } = props;
@@ -35,11 +35,12 @@ const Generator = (props) => {
 	}
 
 	return (
-		<Grid item xs={12} sm={9}>
+		<Grid item xs sm={10}>
 			<Paper className={classes.paper}>
-				<Grid container wrap="nowrap" spacing={16} className={classes.contentTextField}>
-					<Grid item xs zeroMinWidth>
+				<Grid container wrap="nowrap" spacing={16} justify="center" className={classes.contentTextField}>
+					<Grid item xs sm={6} zeroMinWidth>
 						<TextField
+							sm={7}
 							fullWidth
 							id="token"
 							label="TOKEN"
@@ -49,7 +50,7 @@ const Generator = (props) => {
 							margin="dense"
 						/>
 					</Grid>
-					<Grid item xs sm={2} className={classes.contentButton}>
+					<Grid item xs sm={3} className={classes.contentButton}>
 						<Grid container wrap="nowrap" spacing={8}>
 							<Grid item>
 								<Button
@@ -74,20 +75,34 @@ const Generator = (props) => {
 									Tabela
 								</Button>
 							</Grid>
+							<Grid item>
+								<Button
+									size="small"
+									color="secondary"
+									variant="raised"
+									style={{ paddingBottom: 0, paddingTop: 0 }}
+								>
+									<Autorenew />
+								</Button>
+							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
-				<FormControlLabel
-					control={
-						<Switch
-							checked={props.stepByStep}
-							onChange={props.onHandleStepByStep}
-							value="checkedB"
-							color="primary"
+				<Grid container wrap="nowrap" spacing={0} justify="center">
+					<Grid item xs sm={9}>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={props.stepByStep}
+									onChange={props.onHandleStepByStep}
+									value="checkedB"
+									color="primary"
+								/>
+							}
+							label={<span style={{ color: '#888888' }}>PASSO A PASSO</span>}
 						/>
-					}
-					label="Step by Step"
-				/>
+					</Grid>
+				</Grid>
 				{tableDataLength !== 0 && <Divider />}
 				<Grid container wrap="nowrap" className={classes.contentChip} spacing={8}>
 					<Grid item xs zeroMinWidth>
@@ -247,7 +262,6 @@ const styles = (theme) => ({
 		//padding: `0 ${theme.spacing.unit * 3}px`
 	},
 	paper: {
-		width: '100%',
 		marginTop: theme.spacing.unit * 3,
 		overflowX: 'auto',
 		padding: 20
@@ -262,8 +276,11 @@ const styles = (theme) => ({
 	},
 	contentButton: {
 		display: 'flex',
-		alignItems: 'center',
+		alignItems: 'flex-end',
 		justifyContent: 'flex-start'
+	},
+	button: {
+		marginBottom: 4
 	},
 	contentTextField: {
 		display: 'flex',
