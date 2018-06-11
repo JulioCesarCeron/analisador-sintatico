@@ -46,8 +46,8 @@ class App extends Component {
 		showTable: false,
 		tokens: '',
 		stepByStep: false,
-        step: 0,
-        currentToken: 0
+		step: 0,
+		currentToken: 0
 	};
 
 	handleChange = (event, value) => {
@@ -56,18 +56,36 @@ class App extends Component {
 
 	reverse = (str) => {
 		return str.split('').reverse().join('');
-    };
-    
-    handleResetStep = () => {
-        this.setState({
-            step: 0
-        })
-    }
+	};
+
+	handleResetAll = () => {
+		this.setState({
+			value: 1,
+			inputValue: '',
+			history: [],
+			showTable: false,
+			tokens: '',
+			stepByStep: false,
+			step: 0,
+			currentToken: 0
+		});
+	};
+
+	handleResetStep = () => {
+		this.setState({
+			step: 0
+		});
+	};
 
 	handleNextStep = () => {
 		this.setState((prevState) => {
-			return { step: prevState.step < (this.state.history[this.state.currentToken].queue.length - 1) ? (prevState.step + 1) : prevState.step };
-        });
+			return {
+				step:
+					prevState.step < this.state.history[this.state.currentToken].queue.length - 1
+						? prevState.step + 1
+						: prevState.step
+			};
+		});
 	};
 
 	handlePrevioustStep = () => {
@@ -78,7 +96,10 @@ class App extends Component {
 
 	handleStepByStep = () => {
 		this.setState((prevState) => {
-			return { stepByStep: !prevState.stepByStep };
+			return {
+				stepByStep: !prevState.stepByStep,
+				showTable: true
+			};
 		});
 	};
 
@@ -197,12 +218,12 @@ class App extends Component {
 					let indexPos = queue.lastIndexOf(lastQueue);
 					queue = queue.substr(0, indexPos);
 				}
-            }
-            
-            this.setState({
-                currentToken: (this.state.history.length),
-                step: 0
-            })
+			}
+
+			this.setState({
+				currentToken: this.state.history.length,
+				step: 0
+			});
 		}
 	};
 
@@ -233,7 +254,7 @@ class App extends Component {
 			C: [ '=', '{a, c, b, d, $}' ]
 		};
 
-        const { value } = this.state;
+		const { value } = this.state;
 
 		return (
 			<div className={classes.content}>
@@ -264,16 +285,17 @@ class App extends Component {
 								tableData={this.state.history}
 								onHandleToken={this.handleToken}
 								onInputToken={(event) => this.setState({ inputValue: event.target.value })}
-                                data={this.state.tabela_analise}
-                                currentToken={this.state.currentToken}
+								data={this.state.tabela_analise}
+								currentToken={this.state.currentToken}
 								showTable={this.state.showTable}
 								onShowTable={this.onShowTable}
 								step={this.state.step}
 								stepByStep={this.state.stepByStep}
 								onHandleStepByStep={this.handleStepByStep}
-                                onNextStep={this.handleNextStep}
-                                onPreviousStep={this.handlePrevioustStep}
+								onNextStep={this.handleNextStep}
+								onPreviousStep={this.handlePrevioustStep}
                                 onResetStep={this.handleResetStep}
+                                onResetAll={this.handleResetAll}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>

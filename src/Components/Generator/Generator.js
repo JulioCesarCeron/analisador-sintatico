@@ -54,6 +54,7 @@ const Generator = (props) => {
 						<Grid container wrap="nowrap" spacing={8}>
 							<Grid item>
 								<Button
+									title="verifica se o token é válido"
 									size="small"
 									variant="raised"
 									color="primary"
@@ -65,22 +66,29 @@ const Generator = (props) => {
 							</Grid>
 							<Grid item>
 								<Button
+									title="Gera um token válido"
 									size="small"
 									variant="raised"
-									color="primary"
-									className={classes.button}
-									onClick={props.onShowTable}
-									disabled={padStart > 0 ? false : true}
+									style={{
+										paddingBottom: 0,
+										paddingTop: 0,
+										minWidth: 40,
+										backgroundColor: '#4caf50',
+										color: 'white'
+									}}
 								>
-									Tabela
+									Gerar
 								</Button>
 							</Grid>
 							<Grid item>
 								<Button
+									title="Atualizar aplicação (remove todos os tokens)"
 									size="small"
 									color="secondary"
 									variant="raised"
-									style={{ paddingBottom: 0, paddingTop: 0 }}
+                                    style={{ paddingBottom: 0, paddingTop: 0, minWidth: 40 }}
+                                    onClick={props.onResetAll}
+									disabled={padStart > 0 ? false : true}
 								>
 									<Autorenew />
 								</Button>
@@ -93,6 +101,21 @@ const Generator = (props) => {
 						<FormControlLabel
 							control={
 								<Switch
+									disabled={padStart > 0 ? false : true}
+									title="Exibe passo a passo a tabela de parsing"
+									checked={props.showTable}
+									onChange={props.onShowTable}
+									value="checkedB"
+									color="primary"
+								/>
+							}
+							label={<span style={{ color: '#888888' }}>TABELA PARSING</span>}
+						/>
+						<FormControlLabel
+							control={
+								<Switch
+									disabled={padStart > 0 ? false : true}
+									title="Exibe passo a passo a tabela de parsing"
 									checked={props.stepByStep}
 									onChange={props.onHandleStepByStep}
 									value="checkedB"
@@ -147,8 +170,7 @@ const Generator = (props) => {
 												<TableRow key={i}>
 													<TableCell className={classes.cell}>
 														<Typography>
-															<strong>$</strong>
-															{data.queue}
+															<strong>$</strong> {data.queue}
 														</Typography>
 													</TableCell>
 													<TableCell style={{ paddingLeft: 0 }} className={classes.cell}>
@@ -192,8 +214,7 @@ const Generator = (props) => {
 													<TableRow key={i}>
 														<TableCell className={classes.cell}>
 															<Typography>
-																<strong>$</strong>
-																{data.queue}
+																<strong>$</strong> {data.queue}
 															</Typography>
 														</TableCell>
 														<TableCell style={{ paddingLeft: 0 }} className={classes.cell}>
@@ -219,9 +240,7 @@ const Generator = (props) => {
 					</Grid>
 				)}
 
-				{/* STEP BY STEP */}
-
-				{/* ARROWS */}
+				{/*ARROWS STEP BY STEP */}
 				{props.stepByStep && (
 					<Zoom in={props.stepByStep} className={classes.zoomContent}>
 						<div className={classes.details}>
@@ -250,7 +269,7 @@ const Generator = (props) => {
 						</div>
 					</Zoom>
 				)}
-				{/* ARROWS */}
+				{/*ARROWS STEP BY STEP */}
 			</Paper>
 		</Grid>
 	);
@@ -259,15 +278,11 @@ const Generator = (props) => {
 const styles = (theme) => ({
 	root: {
 		overflow: 'hidden'
-		//padding: `0 ${theme.spacing.unit * 3}px`
 	},
 	paper: {
 		marginTop: theme.spacing.unit * 3,
 		overflowX: 'auto',
 		padding: 20
-	},
-	wrapper: {
-		//maxWidth: 400
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
