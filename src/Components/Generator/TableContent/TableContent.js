@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Table, TableHead, TableBody, TableRow, TableCell, Typography, WithStyles } from '@material-ui/core';
+import { Grid, Table, TableHead, TableBody, TableRow, TableCell, Typography } from '@material-ui/core';
 
 const TableContent = (props) => {
 	return (

@@ -1,21 +1,5 @@
 import React from 'react';
-import {
-	withStyles,
-	Grid,
-	Paper,
-	Typography,
-	Chip,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableRow,
-	Switch,
-	IconButton,
-	FormControlLabel,
-	Divider,
-	Zoom
-} from '@material-ui/core';
+import { withStyles, Grid, Paper, Divider } from '@material-ui/core';
 
 import InputToken from './InputToken/InputToken';
 import Chips from './Chips/Chips';
