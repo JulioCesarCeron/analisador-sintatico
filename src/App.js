@@ -285,6 +285,7 @@ class App extends Component {
 								tableData={this.state.history}
 								onHandleToken={this.handleToken}
 								onInputToken={(event) => this.setState({ inputValue: event.target.value })}
+								inputToken={this.state.inputValue}
 								data={this.state.tabela_analise}
 								currentToken={this.state.currentToken}
 								showTable={this.state.showTable}
@@ -294,8 +295,8 @@ class App extends Component {
 								onHandleStepByStep={this.handleStepByStep}
 								onNextStep={this.handleNextStep}
 								onPreviousStep={this.handlePrevioustStep}
-                                onResetStep={this.handleResetStep}
-                                onResetAll={this.handleResetAll}
+								onResetStep={this.handleResetStep}
+								onResetAll={this.handleResetAll}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
