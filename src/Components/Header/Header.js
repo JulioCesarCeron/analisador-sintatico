@@ -35,9 +35,9 @@ class Header extends React.Component {
 		return (
 			<div className={classes.root}>
 				<Toolbar>
-					<IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+					{/*<IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
 						<MenuIcon />
-					</IconButton>
+                    </IconButton>*/}
 					<Typography variant="title" color="inherit" className={classes.flex}>
 						Analisador Sintático
 					</Typography>

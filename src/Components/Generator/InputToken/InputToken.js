@@ -39,7 +39,8 @@ const InputToken = (props) => {
 								<Button
 									title="Gera um token válido"
 									size="small"
-									variant="raised"
+                                    variant="raised"
+                                    onClick={props.onGenerateToken}
 									style={{
 										paddingBottom: 0,
 										paddingTop: 0,

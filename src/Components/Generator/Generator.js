@@ -29,7 +29,8 @@ const Generator = (props) => {
 					onInputToken={props.onInputToken}
 					onHandleToken={props.onHandleToken}
 					onResetAll={props.onResetAll}
-					inputToken={props.inputToken}
+                    inputToken={props.inputToken}
+                    onGenerateToken={props.onGenerateToken}
 				/>
 
 				<SwitchContent

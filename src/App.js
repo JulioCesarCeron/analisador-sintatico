@@ -121,6 +121,49 @@ class App extends Component {
 		});
 	};
 
+	isUpperCase = (aCharacter) => {
+		return aCharacter >= 'A' && aCharacter <= 'Z';
+	};
+
+	handleGenerateToken = () => {
+		const production = {
+			S: [ 'bBa', 'cC' ],
+			A: [ 'cCa', 'bS', 'ε' ],
+			B: [ 'cCA', 'b' ],
+			C: [ 'Bd', 'a' ]
+		};
+		let generateToken = '';
+		let charReplace = '';
+		let keyObj = 'S';
+		let sizeRandom;
+
+		sizeRandom = Math.floor(Math.random() * production[keyObj].length);
+		generateToken = production[keyObj][sizeRandom];
+		let count = 0;
+
+		let i;
+		while (count < 800 && generateToken !== generateToken.toLowerCase) {
+			count += 1;
+
+			for (i = 0; i < generateToken.length && !this.isUpperCase(generateToken.charAt(i)); i++) {}
+			if (generateToken.length === i) {
+				break;
+			}
+			keyObj = generateToken.charAt(i);
+			sizeRandom = Math.floor(Math.random() * production[keyObj].length);
+			charReplace = production[keyObj][sizeRandom];
+			if (charReplace === 'ε') {
+				generateToken = generateToken.replace(keyObj, '');
+			} else {
+				generateToken = generateToken.replace(keyObj, charReplace);
+			}
+		}
+
+		this.setState({
+			inputValue: generateToken
+		});
+	};
+
 	handleToken = () => {
 		if (this.state.tokens.indexOf(this.state.inputValue) !== -1) {
 			alert('Token já foi inserido');
@@ -138,6 +181,8 @@ class App extends Component {
 
 			while (next) {
 				let lengthIteration = stateQueue.length + 1;
+
+				//identifica final da linguagem
 				if (input.length === 0 && queue.length === 0) {
 					stateQueue.push({
 						queue: '',
@@ -148,6 +193,7 @@ class App extends Component {
 					break;
 				}
 
+				//identifica erro, pilha possui mais elementos do que a entrada
 				if (input.length === 0 && queue.length > 0) {
 					stateQueue.push({
 						queue: queue,
@@ -158,6 +204,7 @@ class App extends Component {
 					break;
 				}
 
+				//identifica erro, entrada possui mais elementos do que a pilha
 				if (input.length > 0 && queue.length === 0) {
 					stateQueue.push({
 						queue: '',
@@ -169,6 +216,17 @@ class App extends Component {
 				}
 
 				let lastQueue = queue[queue.length - 1];
+
+				//identifica erro, elmento não pertence a linguagem
+				if ('abcd'.indexOf(input[0]) === -1) {
+					stateQueue.push({
+						queue: queue,
+						input: input,
+						action: 'erro em ' + lengthIteration + ' iterações'
+					});
+					this.saveQueue(stateQueue, false);
+					break;
+				}
 
 				//verifica se o ultimo valor da pilha é um não terminal ou um terminal
 				if (lastQueue === lastQueue.toUpperCase()) {
@@ -206,8 +264,8 @@ class App extends Component {
 
 					if (lastQueue !== input[0]) {
 						stateQueue.push({
-							queue: '',
-							input: '',
+							queue: queue,
+							input: input,
 							action: 'erro em ' + (lengthIteration + 1) + ' iterações'
 						});
 						this.saveQueue(stateQueue, false);
@@ -297,6 +355,7 @@ class App extends Component {
 								onPreviousStep={this.handlePrevioustStep}
 								onResetStep={this.handleResetStep}
 								onResetAll={this.handleResetAll}
+								onGenerateToken={this.handleGenerateToken}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
