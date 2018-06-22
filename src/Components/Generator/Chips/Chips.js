@@ -9,12 +9,11 @@ const Chips = (props) => {
 			<Grid item xs zeroMinWidth>
 				{props.tableData
 					.slice(0)
-					.reverse()
 					.map((token, i) => (
 						<Chip
 							key={i}
 							label={token.queue[0].input}
-							onClick={() => 1}
+							onClick={() => props.onSelectToken(i)}
 							onDelete={() => 1}
 							className={classes.chip}
 							deleteIcon={

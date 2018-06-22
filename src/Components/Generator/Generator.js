@@ -42,7 +42,7 @@ const Generator = (props) => {
 				/>
 
 				{tableDataLength !== 0 && <Divider />}
-				<Chips tableData={props.tableData} />
+				<Chips tableData={props.tableData} onSelectToken={props.onSelectToken} />
 				{tableDataLength !== 0 && <Divider />}
 				{props.showTable && (
 					<TableContent

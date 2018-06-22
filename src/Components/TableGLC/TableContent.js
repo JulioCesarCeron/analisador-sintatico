@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core/';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core/';
 
 const TableContent = (props) => {
 	const { classes } = props;
@@ -10,11 +10,11 @@ const TableContent = (props) => {
 				<TableHead>
 					<TableRow>
 						<TableCell> </TableCell>
-						<TableCell numeric>a</TableCell>
-						<TableCell numeric>b</TableCell>
-						<TableCell numeric>c</TableCell>
-						<TableCell numeric>d</TableCell>
-						<TableCell numeric>$</TableCell>
+						<TableCell className={classes.headCell} numeric>a</TableCell>
+						<TableCell className={classes.headCell} numeric>b</TableCell>
+						<TableCell className={classes.headCell} numeric>c</TableCell>
+						<TableCell className={classes.headCell} numeric>d</TableCell>
+						<TableCell className={classes.headCell} numeric>$</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -42,6 +42,9 @@ const styles = (theme) => ({
 	tableContent: {
 		paddingLeft: 10,
 		paddingRight: 10
+	},
+	headCell: {
+		textAlign: 'center'
 	},
 	cell: {
 		width: 20,

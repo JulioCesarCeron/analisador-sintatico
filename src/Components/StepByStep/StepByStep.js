@@ -5,7 +5,6 @@ const StepByStep = (props) => {
 	let stepByStepContent;
 
 	for (let index = 0; index < props.step; index++) {
-		console.log(props.dataTable);
 		stepByStepContent += (
 			<TableRow key={index}>
 				<TableCell>
@@ -26,7 +25,7 @@ const StepByStep = (props) => {
 		);
 	}
 
-    stepByStepContent
+	stepByStepContent;
 	return <TableBody>stepByStepContent</TableBody>;
 };
 

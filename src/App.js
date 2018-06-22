@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles, Grid, Tabs, Tab, Typography, AppBar } from '@material-ui/core';
+import { withStyles, Grid, Tabs, Tab, Typography, AppBar, Snackbar } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import Header from './Components/Header/Header';
@@ -48,7 +48,8 @@ class App extends Component {
 		tokens: '',
 		stepByStep: false,
 		step: 0,
-		currentToken: 0
+		currentToken: 10,
+		snackbarOpen: false
 	};
 
 	handleChange = (event, value) => {
@@ -132,9 +133,17 @@ class App extends Component {
 		});
 	};
 
+	openSnackbar = () => {
+		this.setState({ snackbarOpen: true });
+	};
+
+	onCloseSnackbar = () => {
+		this.setState({ snackbarOpen: false });
+	};
+
 	handleToken = () => {
 		if (this.state.tokens.indexOf(this.state.inputValue) !== -1) {
-			alert('Token já foi inserido');
+			this.openSnackbar();
 		} else {
 			let input = this.state.inputValue;
 			this.setState((prevState) => {
@@ -253,6 +262,12 @@ class App extends Component {
 		}
 	};
 
+	selecteToken = (index) => {
+		this.setState({
+			currentToken: index
+		});
+	};
+
 	render() {
 		TabContainer.propTypes = {
 			children: PropTypes.node.isRequired
@@ -324,6 +339,7 @@ class App extends Component {
 								onResetStep={this.handleResetStep}
 								onResetAll={this.handleResetAll}
 								onGenerateToken={this.handleGenerateToken}
+								onSelectToken={this.selecteToken}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
@@ -331,6 +347,15 @@ class App extends Component {
 						</Grid>
 					</TabContainer>
 				)}
+				<Snackbar
+					anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+					open={this.state.snackbarOpen}
+					onClose={this.onCloseSnackbar}
+					ContentProps={{
+						'aria-describedby': 'message-id'
+					}}
+					message={<span id="message-id">Esta sentença já foi inserida</span>}
+				/>
 			</div>
 		);
 	}

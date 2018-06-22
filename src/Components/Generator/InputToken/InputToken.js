@@ -13,7 +13,7 @@ const InputToken = (props) => {
 							sm={7}
 							fullWidth
 							id="token"
-							label="TOKEN"
+							label="SENTENÇA"
                             type="search"
                             value={props.inputToken}
 							onChange={props.onInputToken}
