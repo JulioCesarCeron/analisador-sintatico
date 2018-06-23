@@ -61,8 +61,8 @@ class App extends Component {
 		stepByStep: false,
 		step: 0,
 		currentToken: 10,
-        snackbarOpen: false,
-        dialog: false
+		snackbarOpen: false,
+		dialog: false
 	};
 
 	handleChange = (event, value) => {
@@ -83,21 +83,21 @@ class App extends Component {
 			stepByStep: false,
 			step: 0,
 			currentToken: 0
-        });
-        this.closeDialog()
+		});
+		this.closeDialog();
 	};
 
-    openDialog = () => {
-        this.setState({
-            dialog: true
-        })
-    }
+	openDialog = () => {
+		this.setState({
+			dialog: true
+		});
+	};
 
-    closeDialog = () => {
-        this.setState({
-            dialog: false
-        })
-    }
+	closeDialog = () => {
+		this.setState({
+			dialog: false
+		});
+	};
 
 	handleResetStep = () => {
 		this.setState({
@@ -402,10 +402,10 @@ class App extends Component {
 								onResetStep={this.handleResetStep}
 								onResetAll={this.handleResetAll}
 								onGenerateToken={this.handleGenerateToken}
-                                onSelectToken={this.selecteToken}
-                                onDialog={this.state.dialog}
-                                onOpenDialog={this.openDialog}
-                                onCloseDialog={this.closeDialog}
+								onSelectToken={this.selecteToken}
+								onDialog={this.state.dialog}
+								onOpenDialog={this.openDialog}
+								onCloseDialog={this.closeDialog}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
