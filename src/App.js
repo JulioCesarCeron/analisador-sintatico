@@ -23,7 +23,7 @@ import GenerateToken from './Components/GenerateToken/GenerateToken';
 
 class App extends Component {
 	state = {
-		value: 1,
+		value: 0,
 		inputValue: '',
 		tabela_analise: {
 			S: {
