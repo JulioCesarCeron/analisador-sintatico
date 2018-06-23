@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
-import { withStyles, Grid, Tabs, Tab, Typography, AppBar, Snackbar } from '@material-ui/core';
+import {
+	withStyles,
+	Grid,
+	Tabs,
+	Tab,
+	Typography,
+	AppBar,
+	Snackbar,
+	SnackbarContent,
+	IconButton
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { amber, green } from '@material-ui/core/colors';
+import { Info, Close } from '@material-ui/icons';
 
 import Header from './Components/Header/Header';
 import InfoProduction from './Components/InfoProduction/InfoProduction';
@@ -49,7 +61,8 @@ class App extends Component {
 		stepByStep: false,
 		step: 0,
 		currentToken: 10,
-		snackbarOpen: false
+        snackbarOpen: false,
+        dialog: false
 	};
 
 	handleChange = (event, value) => {
@@ -70,8 +83,21 @@ class App extends Component {
 			stepByStep: false,
 			step: 0,
 			currentToken: 0
-		});
+        });
+        this.closeDialog()
 	};
+
+    openDialog = () => {
+        this.setState({
+            dialog: true
+        })
+    }
+
+    closeDialog = () => {
+        this.setState({
+            dialog: false
+        })
+    }
 
 	handleResetStep = () => {
 		this.setState({
@@ -322,6 +348,43 @@ class App extends Component {
 				{value === 1 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
+							<Snackbar
+								anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+								open={this.state.snackbarOpen}
+								onClose={this.onCloseSnackbar}
+								ContentProps={{
+									'aria-describedby': 'message-id'
+								}}
+								message={<span id="message-id">Esta sentença já foi inserida</span>}
+							/>
+							<Snackbar
+								anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+								open={this.state.snackbarOpen}
+								autoHideDuration={5000}
+								onClose={this.onCloseSnackbar}
+							>
+								<SnackbarContent
+									className={classes.info}
+									aria-describedby="client-snackbar"
+									message={
+										<span id="client-snackbar" className={classes.message}>
+											<Info className={classes.icon} />
+											<span style={{ marginLeft: 10 }}>Sentença já inserida</span>
+										</span>
+									}
+									action={[
+										<IconButton
+											key="close"
+											aria-label="Close"
+											color="inherit"
+											className={classes.close}
+											onClick={this.onCloseSnackbar}
+										>
+											<Close className={classes.icon} />
+										</IconButton>
+									]}
+								/>
+							</Snackbar>
 							<Generator
 								tableData={this.state.history}
 								onHandleToken={this.handleToken}
@@ -339,7 +402,10 @@ class App extends Component {
 								onResetStep={this.handleResetStep}
 								onResetAll={this.handleResetAll}
 								onGenerateToken={this.handleGenerateToken}
-								onSelectToken={this.selecteToken}
+                                onSelectToken={this.selecteToken}
+                                onDialog={this.state.dialog}
+                                onOpenDialog={this.openDialog}
+                                onCloseDialog={this.closeDialog}
 							/>
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16}>
@@ -347,15 +413,6 @@ class App extends Component {
 						</Grid>
 					</TabContainer>
 				)}
-				<Snackbar
-					anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-					open={this.state.snackbarOpen}
-					onClose={this.onCloseSnackbar}
-					ContentProps={{
-						'aria-describedby': 'message-id'
-					}}
-					message={<span id="message-id">Esta sentença já foi inserida</span>}
-				/>
 			</div>
 		);
 	}
@@ -370,6 +427,32 @@ const styles = (theme) => ({
 	root: {
 		paddingTop: 0,
 		padding: 20
+	},
+	success: {
+		backgroundColor: green[600]
+	},
+	error: {
+		backgroundColor: theme.palette.error.dark
+	},
+	info: {
+		backgroundColor: theme.palette.primary.dark
+	},
+	warning: {
+		backgroundColor: amber[700]
+	},
+	icon: {
+		fontSize: 20
+	},
+	iconVariant: {
+		opacity: 0.9,
+		marginRight: theme.spacing.unit
+	},
+	message: {
+		display: 'flex',
+		alignItems: 'center'
+	},
+	margin: {
+		margin: theme.spacing.unit
 	}
 });
 

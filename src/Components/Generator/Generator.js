@@ -31,6 +31,9 @@ const Generator = (props) => {
 					onResetAll={props.onResetAll}
                     inputToken={props.inputToken}
                     onGenerateToken={props.onGenerateToken}
+                    onDialog={props.onDialog}
+                    onOpenDialog={props.onOpenDialog}
+                    onCloseDialog={props.onCloseDialog}
 				/>
 
 				<SwitchContent

@@ -1,9 +1,20 @@
 import React from 'react';
-import { Grid, Button, withStyles, TextField } from '@material-ui/core';
-import { Autorenew } from '@material-ui/icons';
+import {
+	Grid,
+	Button,
+	withStyles,
+	TextField,
+	Dialog,
+	DialogContent,
+	DialogActions,
+	DialogContentText,
+	DialogTitle
+} from '@material-ui/core';
+import { Autorenew, Delete } from '@material-ui/icons';
 
 const InputToken = (props) => {
 	const { classes } = props;
+	let open = false;
 	return (
 		<Grid container wrap="nowrap" spacing={16} justify="center" className={classes.contentTextField}>
 			<Grid item xs sm={9} className={classes.contentWrapper}>
@@ -14,8 +25,8 @@ const InputToken = (props) => {
 							fullWidth
 							id="token"
 							label="SENTENÇA"
-                            type="search"
-                            value={props.inputToken}
+							type="search"
+							value={props.inputToken}
 							onChange={props.onInputToken}
 							margin="dense"
 						/>
@@ -31,16 +42,17 @@ const InputToken = (props) => {
 									color="primary"
 									className={classes.button}
 									onClick={props.onHandleToken}
+									disabled={props.inputToken !== '' ? false : true}
 								>
-									Verificar
+									Validar
 								</Button>
 							</Grid>
 							<Grid item>
 								<Button
 									title="Gera um token válido"
 									size="small"
-                                    variant="raised"
-                                    onClick={props.onGenerateToken}
+									variant="raised"
+									onClick={props.onGenerateToken}
 									style={{
 										paddingBottom: 0,
 										paddingTop: 0,
@@ -54,21 +66,44 @@ const InputToken = (props) => {
 							</Grid>
 							<Grid item>
 								<Button
-									title="Atualiza a aplicação (remove todos os tokens)"
+									title="Remover todos os tokens inseridos)"
 									size="small"
 									color="secondary"
 									variant="raised"
 									style={{ paddingBottom: 0, paddingTop: 0, minWidth: 40 }}
-									onClick={props.onResetAll}
+									//onClick={props.onResetAll}
+									onClick={props.onOpenDialog}
 									disabled={props.padStart > 0 ? false : true}
 								>
-									<Autorenew />
+									<Delete />
 								</Button>
 							</Grid>
 						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
+
+			<Dialog
+				open={props.onDialog}
+				onClose={() => 1}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{"Limpar Sentenças"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Esta ação irá remover todas as sentenças inseridas, deseja continuar?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={props.onCloseDialog} color="primary">
+						Cancelar
+					</Button>
+					<Button onClick={props.onResetAll} color="primary" autoFocus>
+						Sim
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Grid>
 	);
 };
