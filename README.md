@@ -8,7 +8,7 @@ Projeto desenvolvido utilizando a biblioteca React.
 
 Acessar o projeto: [link](https://juliocesarceron.github.io/analisador-sintatico/)
 
-Se desejar baixar o projeto e executar localmente, baixe o arquivo neste [link](https://github.com/JulioCesarCeron/analisador-sintatico/archive/gh-pages.zip) 
+Se desejar baixar o projeto e executar localmente, baixe o arquivo neste [link](https://github.com/JulioCesarCeron/analisador-sintatico/archive/download.zip) 
 
 e execute o arquivo `index.html` 
 
