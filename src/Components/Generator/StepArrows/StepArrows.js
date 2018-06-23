@@ -1,6 +1,6 @@
 import React from 'react';
 import { Zoom, IconButton, withStyles } from '@material-ui/core';
-import { SkipPrevious, PlayArrow, SkipNext, Replay } from '@material-ui/icons';
+import { SkipPrevious, SkipNext, Replay } from '@material-ui/icons';
 
 const StepArrows = (props) => {
 	const { classes } = props;
@@ -11,11 +11,6 @@ const StepArrows = (props) => {
 					<IconButton aria-label="Previous" onClick={props.onPreviousStep}>
 						<SkipPrevious />
 					</IconButton>
-					    {/*
-                            <IconButton aria-label="Play/pause">
-                                <PlayArrow className={classes.playIcon} />
-                            </IconButton>
-                        */}
 
 					{!props.replay && (
 						<IconButton aria-label="Next" onClick={props.onNextStep}>

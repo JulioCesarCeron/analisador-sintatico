@@ -10,11 +10,10 @@ import {
 	DialogContentText,
 	DialogTitle
 } from '@material-ui/core';
-import { Autorenew, Delete } from '@material-ui/icons';
+import { Delete } from '@material-ui/icons';
 
 const InputToken = (props) => {
 	const { classes } = props;
-	let open = false;
 	return (
 		<Grid container wrap="nowrap" spacing={16} justify="center" className={classes.contentTextField}>
 			<Grid item xs sm={9} className={classes.contentWrapper}>
@@ -89,7 +88,7 @@ const InputToken = (props) => {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{"Limpar Sentenças"}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{'Limpar Sentenças'}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
 						Esta ação irá remover todas as sentenças inseridas, deseja continuar?
