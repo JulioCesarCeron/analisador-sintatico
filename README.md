@@ -6,11 +6,11 @@ Trabalho desenvolvido para a disciplina de Compiladores do curso de ciência da 
 
 Projeto desenvolvido utilizando a biblioteca React.
 
-link para acessar o projeto: https://juliocesarceron.github.io/analisador-sintatico/
+Acessar o projeto: [link](https://juliocesarceron.github.io/analisador-sintatico/)
 
-Se desejar baixar o projeto e executar localmente, baixe o arquivo `.zip` neste [link](https://github.com/JulioCesarCeron/analisador-sintatico/archive/gh-pages.zip) 
+Se desejar baixar o projeto e executar localmente, baixe o arquivo neste [link](https://github.com/JulioCesarCeron/analisador-sintatico/archive/gh-pages.zip) 
 
-após, descompacte o arquivo `.zip` e execute o arquivo `index.html` 
+e execute o arquivo `index.html` 
 
 ## Instalação
 
