@@ -88,7 +88,7 @@ const InputToken = (props) => {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{'Limpar Sentenças'}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{'Remover Sentenças?'}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
 						Esta ação irá remover todas as sentenças inseridas, deseja continuar?

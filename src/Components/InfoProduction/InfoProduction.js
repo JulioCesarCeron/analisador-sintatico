@@ -59,7 +59,9 @@ const styles = (theme) => ({
 	cell: {
 		width: 19,
 		textAlign: 'center',
-		padding: 0
+        padding: 0,
+        fontSize: 16,
+        color: '#676767'
 	},
 	title: {
 		width: '100%',

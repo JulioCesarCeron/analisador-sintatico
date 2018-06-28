@@ -44,12 +44,16 @@ const styles = (theme) => ({
 		paddingRight: 10
 	},
 	headCell: {
-		textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 16,
+        
 	},
 	cell: {
 		width: 20,
 		textAlign: 'center',
-		padding: 0
+        padding: 0,
+        fontSize: 16,
+       // color: '#676767'
 	},
 	title: {
 		width: '100%',

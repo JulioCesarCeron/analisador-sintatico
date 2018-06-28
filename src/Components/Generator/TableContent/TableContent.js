@@ -9,6 +9,7 @@ const TableContent = (props) => {
 					<Table>
 						<TableHead>
 							<TableRow>
+								<TableCell>I.</TableCell>
 								<TableCell>PILHA</TableCell>
 								<TableCell style={{ textAlign: 'center' }}>ENTRADA</TableCell>
 								<TableCell>AÇÃO</TableCell>
@@ -19,15 +20,18 @@ const TableContent = (props) => {
 								{props.queue.map((data, i) => {
 									return (
 										<TableRow key={i}>
+											<TableCell>{(i+1)}</TableCell>
 											<TableCell>
 												<Typography>
 													<strong>$</strong> {data.queue}
 												</Typography>
 											</TableCell>
-											<TableCell style={{ paddingLeft: 0 }}>
-												<Typography style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
-													{data.input.padStart(props.padStart)} <strong>$</strong>
-												</Typography>
+											<TableCell>
+												<div style={{ paddingLeft: 0 }}>
+													<Typography style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+														{data.input.padStart(props.padStart)} <strong>$</strong>
+													</Typography>
+												</div>
 											</TableCell>
 											<TableCell>
 												<Typography>{data.action}</Typography>

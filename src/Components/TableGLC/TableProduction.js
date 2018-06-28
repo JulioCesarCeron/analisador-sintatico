@@ -7,7 +7,7 @@ import TableContent from './TableContent';
 const TableProduction = (props) => {
 	const { classes } = props;
 	return (
-		<Grid item xs={12} sm={6}>
+		<Grid item xs={12} sm={9}>
 			<Paper className={classes.root}>
 				<div className={classes.paperContentTitle}>
 					<Typography className={classes.paperTitle}>{props.title}</Typography>

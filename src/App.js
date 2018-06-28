@@ -309,14 +309,14 @@ class App extends Component {
 
 		const first = {
 			S: [ '=', '{b, c}' ],
-			A: [ '=', '{c, b}' ],
+			A: [ '=', '{c, b, ε}' ],
 			B: [ '=', '{c, b}' ],
 			C: [ '=', '{c, b, a}' ]
 		};
 
 		const follow = {
 			S: [ '=', '{$, a, d}' ],
-			A: [ '=', '{a, d}' ],
+			A: [ '=', '{a, d, ε}' ],
 			B: [ '=', '{a, d}' ],
 			C: [ '=', '{a, c, b, d, $}' ]
 		};
@@ -336,9 +336,9 @@ class App extends Component {
 				{value === 0 && (
 					<TabContainer>
 						<Grid container className={classes.root} justify="center" spacing={16}>
-							<InfoProduction title="Produção" sm={2} data={data} />
-							<InfoProduction title="First" sm={2} data={first} />
-							<InfoProduction title="Follow" sm={2} data={follow} />
+							<InfoProduction title="Produção" sm={3} data={data} />
+							<InfoProduction title="First" sm={3} data={first} />
+							<InfoProduction title="Follow" sm={3} data={follow} />
 						</Grid>
 						<Grid container className={classes.root} justify="center" spacing={16} wrap="wrap">
 							<TableProduction data={this.state.tabela_analise} title="Tabela de Análise" />
