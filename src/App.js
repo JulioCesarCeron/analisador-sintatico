@@ -316,7 +316,7 @@ class App extends Component {
 
 		const follow = {
 			S: [ '=', '{$, a, d}' ],
-			A: [ '=', '{a, d, ε}' ],
+			A: [ '=', '{a, d}' ],
 			B: [ '=', '{a, d}' ],
 			C: [ '=', '{a, c, b, d, $}' ]
 		};
