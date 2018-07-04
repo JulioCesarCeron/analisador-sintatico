@@ -4,7 +4,7 @@ Trabalho desenvolvido para a disciplina de Compiladores do curso de ciência da 
 
 ## Projeto
 
-Projeto desenvolvido utilizando a biblioteca React.
+Projeto desenvolvido utilizando a biblioteca [React](https://github.com/facebook/react).
 
 Acessar o projeto: [link](https://juliocesarceron.github.io/analisador-sintatico/)
 
