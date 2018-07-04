@@ -35,19 +35,6 @@ const InputToken = (props) => {
 						<Grid container wrap="nowrap" spacing={8}>
 							<Grid item>
 								<Button
-									title="verifica se o token é válido"
-									size="small"
-									variant="raised"
-									color="primary"
-									className={classes.button}
-									onClick={props.onHandleToken}
-									disabled={props.inputToken !== '' ? false : true}
-								>
-									Validar
-								</Button>
-							</Grid>
-							<Grid item>
-								<Button
 									title="Gera um token válido"
 									size="small"
 									variant="raised"
@@ -61,6 +48,19 @@ const InputToken = (props) => {
 									}}
 								>
 									Gerar
+								</Button>
+							</Grid>
+							<Grid item>
+								<Button
+									title="verifica se o token é válido"
+									size="small"
+									variant="raised"
+									color="primary"
+									className={classes.button}
+									onClick={props.onHandleToken}
+									disabled={props.inputToken !== '' ? false : true}
+								>
+									Validar
 								</Button>
 							</Grid>
 							<Grid item>
